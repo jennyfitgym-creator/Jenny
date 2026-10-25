@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Método no permitido' });
     }
 
-    const { title, body, topic, secret } = req.body;
+    const { title, body, topic, image, secret } = req.body;
 
     if (secret !== 'JENNYFIT_ADMIN_2026') {
         return res.status(401).json({ error: 'No autorizado' });
@@ -20,11 +20,11 @@ export default async function handler(req, res) {
 
     try {
         const message = {
-            // Usamos DATA en lugar de NOTIFICATION para evitar duplicados
             data: {
                 title: title,
                 body: body,
-                icon: 'https://jenny-one-green.vercel.app/Iconojennyfit.jpg'
+                icon: 'https://jenny-one-green.vercel.app/Iconojennyfit.jpg',
+                image: image || '' // <-- AQUÍ VIAJA LA IMAGEN
             },
             topic: topic
         };

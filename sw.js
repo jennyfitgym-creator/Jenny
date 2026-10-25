@@ -16,18 +16,19 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
     console.log('[sw.js] Mensaje recibido:', payload);
     
-    // Leemos los datos enviados por el backend
-    const title = payload.data?.title || 'Jennyfit';
-    const body = payload.data?.body || '';
-    const icon = payload.data?.icon || '/Iconojennyfit.jpg';
+    // Si el backend manda un data, lo usamos. Si manda notification, lo leemos de ahí también.
+    const title = payload.data?.title || payload.notification?.title || 'Jennyfit';
+    const body = payload.data?.body || payload.notification?.body || '';
+    
+    // FORZAMOS EL ICONO DE JENNYFIT AQUÍ
+    const iconUrl = 'https://jenny-one-green.vercel.app/Iconojennyfit.jpg'; 
 
     const notificationOptions = {
         body: body,
-        icon: icon,
-        badge: icon,
+        icon: iconUrl,
+        badge: iconUrl,
         vibrate: [200, 100, 200]
     };
 
-    // Mostramos SOLO UNA notificación
     self.registration.showNotification(title, notificationOptions);
 });

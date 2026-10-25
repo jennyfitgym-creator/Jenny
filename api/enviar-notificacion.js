@@ -14,20 +14,30 @@ module.exports = async function handler(req, res) {
 
     const { title, body, topic, secret } = req.body;
 
-    // 🔒 Verificación de seguridad
     if (secret !== 'JENNYFIT_ADMIN_2026') {
         return res.status(401).json({ error: 'No autorizado' });
     }
 
     if (!title || !body || !topic) {
-        return res.status(400).json({ error: 'Faltan datos (título, mensaje o tema).' });
+        return res.status(400).json({ error: 'Faltan datos.' });
     }
 
     try {
         const message = {
-            notification: { title: title, body: body },
+            notification: { 
+                title: title, 
+                body: body 
+            },
+            // AQUÍ LE DECIMOS A FIREBASE QUE USE TU ICONO OFICIAL
+            webpush: {
+                notification: {
+                    icon: 'https://jenny-one-green.vercel.app/Iconojennyfit.jpg',
+                    badge: 'https://jenny-one-green.vercel.app/Iconojennyfit.jpg'
+                }
+            },
             topic: topic
         };
+        
         const response = await admin.messaging().send(message);
         return res.status(200).json({ success: true, messageId: response });
     } catch (error) {

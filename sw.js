@@ -14,18 +14,18 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-    console.log('[sw3.js] Mensaje recibido:', payload);
+    console.log('[sw.js] Mensaje recibido:', payload);
     
     const title = payload.data?.title || payload.notification?.title || 'Jennyfit';
     const body = payload.data?.body || payload.notification?.body || '';
     const iconUrl = 'https://jenny-one-green.vercel.app/Iconojennyfit.jpg'; 
-    const imageUrl = payload.data?.image || null; // <-- LEEMOS LA IMAGEN
+    const imageUrl = payload.data?.image || null; 
 
     const notificationOptions = {
         body: body,
         icon: iconUrl,
         badge: iconUrl,
-        image: imageUrl, // <-- AQUÍ SE MUESTRA LA IMAGEN GRANDE
+        image: imageUrl, 
         vibrate: [200, 100, 200]
     };
 

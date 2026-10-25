@@ -24,7 +24,7 @@ export default async function handler(req, res) {
                 title: title,
                 body: body,
                 icon: 'https://jenny-one-green.vercel.app/Iconojennyfit.jpg',
-                image: image || '' // <-- AQUÍ VIAJA LA IMAGEN
+                image: image || ''
             },
             topic: topic
         };

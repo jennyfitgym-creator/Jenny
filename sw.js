@@ -14,5 +14,20 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-    console.log('[sw.js] Mensaje en background recibido:', payload);
+    console.log('[sw.js] Mensaje recibido:', payload);
+    
+    // Leemos los datos enviados por el backend
+    const title = payload.data?.title || 'Jennyfit';
+    const body = payload.data?.body || '';
+    const icon = payload.data?.icon || '/Iconojennyfit.jpg';
+
+    const notificationOptions = {
+        body: body,
+        icon: icon,
+        badge: icon,
+        vibrate: [200, 100, 200]
+    };
+
+    // Mostramos SOLO UNA notificación
+    self.registration.showNotification(title, notificationOptions);
 });

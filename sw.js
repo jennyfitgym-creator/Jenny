@@ -14,19 +14,18 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-    console.log('[sw.js] Mensaje recibido:', payload);
+    console.log('[sw3.js] Mensaje recibido:', payload);
     
-    // Si el backend manda un data, lo usamos. Si manda notification, lo leemos de ahí también.
     const title = payload.data?.title || payload.notification?.title || 'Jennyfit';
     const body = payload.data?.body || payload.notification?.body || '';
-    
-    // FORZAMOS EL ICONO DE JENNYFIT AQUÍ
     const iconUrl = 'https://jenny-one-green.vercel.app/Iconojennyfit.jpg'; 
+    const imageUrl = payload.data?.image || null; // <-- LEEMOS LA IMAGEN
 
     const notificationOptions = {
         body: body,
         icon: iconUrl,
         badge: iconUrl,
+        image: imageUrl, // <-- AQUÍ SE MUESTRA LA IMAGEN GRANDE
         vibrate: [200, 100, 200]
     };
 

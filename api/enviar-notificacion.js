@@ -7,7 +7,7 @@ if (!admin.apps.length) {
     });
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Método no permitido' });
     }
@@ -18,30 +18,20 @@ module.exports = async function handler(req, res) {
         return res.status(401).json({ error: 'No autorizado' });
     }
 
-    if (!title || !body || !topic) {
-        return res.status(400).json({ error: 'Faltan datos.' });
-    }
-
     try {
         const message = {
-            notification: { 
-                title: title, 
-                body: body 
-            },
-            // AQUÍ LE DECIMOS A FIREBASE QUE USE TU ICONO OFICIAL
-            webpush: {
-                notification: {
-                    icon: 'https://jenny-one-green.vercel.app/Iconojennyfit.jpg',
-                    badge: 'https://jenny-one-green.vercel.app/Iconojennyfit.jpg'
-                }
+            // Usamos DATA en lugar de NOTIFICATION para evitar duplicados
+            data: {
+                title: title,
+                body: body,
+                icon: 'https://jenny-one-green.vercel.app/Iconojennyfit.jpg'
             },
             topic: topic
         };
-        
         const response = await admin.messaging().send(message);
         return res.status(200).json({ success: true, messageId: response });
     } catch (error) {
-        console.error('Error al enviar notificación:', error);
+        console.error('Error al enviar:', error);
         return res.status(500).json({ error: error.message });
     }
 };
